@@ -3,33 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>AsmarA.handmade — Catalog</title>
-
-  <!-- Telegram WebApp -->
+  <title>AsmarA.handmade — Web Catalog</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root{
-      --bg: #0b0b0f;
-      --card: rgba(255,255,255,0.06);
-      --card2: rgba(255,255,255,0.09);
+      --bg:#07070b;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.09);
+      --line: rgba(255,255,255,0.10);
       --text: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.62);
-      --line: rgba(255,255,255,0.10);
-      --gold: #d6b36a;
-      --gold2:#f2e3c4;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
-      --radius2: 26px;
+      --gold:#d6b36a;
+      --gold2:#f1dfb8;
+      --shadow: 0 18px 70px rgba(0,0,0,.55);
+      --r16:16px;
+      --r22:22px;
       --safeB: env(safe-area-inset-bottom, 0px);
       --safeT: env(safe-area-inset-top, 0px);
-    }
-
-    /* Telegram theme support */
-    body.tg {
-      --bg: var(--tg-theme-bg-color, #0b0b0f);
-      --text: var(--tg-theme-text-color, rgba(255,255,255,0.92));
-      --muted: color-mix(in oklab, var(--text) 65%, transparent);
     }
 
     *{box-sizing:border-box}
@@ -37,176 +28,163 @@
     body{
       margin:0;
       font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
-      background:
-        radial-gradient(1200px 800px at 20% 0%, rgba(214,179,106,0.16), transparent 60%),
-        radial-gradient(900px 700px at 90% 20%, rgba(255,255,255,0.10), transparent 60%),
-        linear-gradient(180deg, #06060a, #0b0b0f 45%, #07070b);
       color: var(--text);
-      padding-bottom: calc(84px + var(--safeB)); /* space for bottom bar */
+      background:
+        radial-gradient(1100px 700px at 20% 0%, rgba(214,179,106,0.18), transparent 60%),
+        radial-gradient(800px 600px at 90% 20%, rgba(255,255,255,0.10), transparent 60%),
+        linear-gradient(180deg, #050509, #0a0a10 45%, #050509);
+      padding-bottom: calc(92px + var(--safeB));
     }
 
-    .wrap{max-width: 980px; margin:0 auto; padding: 18px 16px 34px; padding-top: calc(14px + var(--safeT));}
+    .wrap{max-width:980px; margin:0 auto; padding: 16px 14px 26px; padding-top: calc(12px + var(--safeT));}
     .top{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding: 10px 0 16px;
+      padding: 10px 2px 16px;
     }
-    .brand{
-      display:flex; flex-direction:column; gap:3px;
-    }
-    .brand .name{
-      font-weight: 700; letter-spacing:.4px;
-      font-size: 18px;
-    }
-    .brand .tag{
-      font-size: 12px; color: var(--muted);
-      letter-spacing:.3px;
-    }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
+    .brand .name{font-weight:900; letter-spacing:.3px; font-size:18px;}
+    .brand .tag{color:var(--muted); font-size:12px; margin-top:4px;}
+    .sig{
       padding:10px 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.04);
-      border-radius: 999px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      color: var(--text);
-      font-size: 12px;
+      border-radius:999px;
+      border:1px solid rgba(214,179,106,0.28);
+      background: rgba(214,179,106,0.08);
+      color: var(--gold2);
+      font-weight:800;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:11px;
       user-select:none;
     }
-    .pill b{color: var(--gold); font-weight:700}
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
+
     .hero{
-      grid-column: 1 / -1;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
-      border-radius: var(--radius2);
-      padding: 16px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border-radius: var(--r22);
       box-shadow: var(--shadow);
+      padding: 16px;
       position:relative;
       overflow:hidden;
     }
     .hero:before{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(800px 400px at 20% 0%, rgba(214,179,106,0.22), transparent 55%);
+      background: radial-gradient(800px 420px at 20% 0%, rgba(214,179,106,0.22), transparent 55%);
       pointer-events:none;
     }
-    .hero .h-title{position:relative; font-size: 20px; font-weight: 800; letter-spacing:.4px;}
-    .hero .h-sub{position:relative; margin-top:8px; color: var(--muted); line-height:1.4; font-size: 13px;}
-    .hero .h-row{position:relative; display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px;}
+    .hero h1{margin:0; position:relative; font-size:20px; letter-spacing:.2px;}
+    .hero p{margin:8px 0 0; position:relative; color:var(--muted); line-height:1.4; font-size:13px;}
+    .chips{position:relative; display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;}
     .chip{
-      padding:8px 10px; border-radius:999px;
-      border:1px solid var(--line);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.18);
-      color: rgba(255,255,255,.85);
+      color: rgba(255,255,255,0.85);
       font-size:12px;
     }
 
-    .sectionTitle{
-      grid-column: 1/-1;
-      display:flex; align-items:end; justify-content:space-between;
-      margin-top: 8px;
-    }
-    .sectionTitle h2{
-      margin:0; font-size: 16px; letter-spacing:.3px;
-    }
-    .sectionTitle .muted{color:var(--muted); font-size:12px}
+    .section{margin-top:14px;}
+    .sectionHead{display:flex; justify-content:space-between; align-items:end; gap:10px; margin: 6px 2px 10px;}
+    .sectionHead h2{margin:0; font-size:15px; letter-spacing:.2px;}
+    .sectionHead span{color:var(--muted); font-size:12px;}
 
-    .product{
-      grid-column: span 6;
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width:820px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+
+    .card{
       border:1px solid var(--line);
       background: rgba(255,255,255,0.05);
-      border-radius: var(--radius);
+      border-radius: var(--r16);
       overflow:hidden;
-      box-shadow: 0 14px 50px rgba(0,0,0,.35);
-      display:flex; flex-direction:column;
-      min-height: 260px;
+      box-shadow: 0 14px 50px rgba(0,0,0,.38);
+      display:flex;
+      flex-direction:column;
+      min-height: 290px;
     }
-    @media (min-width: 780px){
-      .product{ grid-column: span 4; }
-    }
-    .p-img{
-      aspect-ratio: 4/3;
-      background: rgba(255,255,255,0.03);
+    .img{
       position:relative;
-      overflow:hidden;
+      aspect-ratio: 4/3;
+      background:
+        radial-gradient(220px 150px at 20% 30%, rgba(214,179,106,0.20), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
     }
-    .p-img img{
-      width:100%; height:100%; object-fit:cover;
-      transform: scale(1.02);
-      filter: contrast(1.05) saturate(1.06);
-    }
-    .p-img:after{
+    .img img{width:100%; height:100%; object-fit:cover; display:block;}
+    .img:after{
       content:"";
       position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.55));
+      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.62));
       pointer-events:none;
     }
-    .p-body{ padding: 12px 12px 12px; display:flex; flex-direction:column; gap:10px; flex:1;}
-    .p-top{display:flex; justify-content:space-between; gap:10px;}
-    .p-name{font-weight:800; letter-spacing:.2px; line-height:1.2;}
-    .p-price{color: var(--gold2); font-weight:800; white-space:nowrap;}
-    .p-desc{color:var(--muted); font-size:12px; line-height:1.35; flex:1;}
-    .p-actions{display:flex; gap:10px; align-items:center; justify-content:space-between;}
-    .btn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.05);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-weight:700;
-      letter-spacing:.2px;
-      cursor:pointer;
-    }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(214,179,106,0.95), rgba(214,179,106,0.60));
-      border:1px solid rgba(214,179,106,0.55);
-      color:#0b0b0f;
-    }
-    .btn:active{transform: translateY(1px);}
-    .qty{
-      display:flex; align-items:center; gap:8px;
-      color: var(--muted);
-      font-size: 12px;
+    .img .fallback{
+      position:absolute; left:12px; bottom:10px;
+      color: rgba(255,255,255,0.75);
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      display:none;
     }
 
-    /* Bottom nav */
+    .body{padding: 12px; display:flex; flex-direction:column; gap:10px; flex:1;}
+    .row{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
+    .name{font-weight:900; line-height:1.15; font-size:13px;}
+    .price{color: var(--gold2); font-weight:900; white-space:nowrap;}
+    .desc{color: var(--muted); font-size:12px; line-height:1.35; flex:1;}
+    .actions{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .btn{
+      border:1px solid rgba(214,179,106,0.45);
+      background: rgba(214,179,106,0.10);
+      color: var(--gold2);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight:900;
+      letter-spacing:.2px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:active{transform: translateY(1px);}
+    .qty{color:var(--muted); font-size:12px;}
+    .qty b{color:var(--gold2);}
+
+    /* Bottom bar */
     .bottomBar{
-      position:fixed;
-      left:0; right:0; bottom:0;
+      position:fixed; left:0; right:0; bottom:0;
       padding: 10px 12px calc(10px + var(--safeB));
-      background: rgba(10,10,14,0.80);
-      backdrop-filter: blur(14px);
+      background: rgba(8,8,12,0.82);
       border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(18px);
       z-index: 50;
     }
     .nav{
-      max-width: 980px; margin:0 auto;
+      max-width:980px; margin:0 auto;
       display:grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
     .navBtn{
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap: 4px;
-      padding: 10px 10px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.10);
+      display:flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.82);
-      font-size: 11px;
+      color: rgba(255,255,255,0.86);
+      font-weight:800;
+      letter-spacing:.2px;
       user-select:none;
       position:relative;
     }
     .navBtn.active{
-      border-color: rgba(214,179,106,0.50);
-      background: rgba(214,179,106,0.10);
+      border-color: rgba(214,179,106,0.55);
+      background: linear-gradient(135deg, rgba(214,179,106,0.16), rgba(255,255,255,0.03));
       color: var(--gold2);
     }
-    .badge{
+    .count{
       position:absolute;
       top: 8px; right: 10px;
       background: var(--gold);
@@ -215,40 +193,31 @@
       font-size: 11px;
       padding: 2px 7px;
       border-radius: 999px;
+      display:none;
     }
 
     /* Cart sheet */
-    .sheetMask{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,0.55);
-      display:none;
-      z-index: 60;
-    }
+    .mask{position:fixed; inset:0; background: rgba(0,0,0,0.55); display:none; z-index:60;}
     .sheet{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      background: rgba(16,16,22,0.92);
-      backdrop-filter: blur(18px);
-      border-top-left-radius: 22px;
-      border-top-right-radius: 22px;
+      position:fixed; left:0; right:0; bottom:0;
+      background: rgba(16,16,22,0.94);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
       border-top: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 -20px 70px rgba(0,0,0,0.65);
+      box-shadow: 0 -20px 80px rgba(0,0,0,0.65);
       transform: translateY(105%);
       transition: transform .22s ease;
-      z-index: 70;
+      z-index:70;
       max-height: 82vh;
       overflow:hidden;
+      backdrop-filter: blur(18px);
     }
     .sheet.open{ transform: translateY(0); }
+    .grab{width:44px; height:5px; border-radius:999px; background: rgba(255,255,255,0.18); margin: 10px auto 0;}
     .sheetHead{
-      padding: 10px 14px 8px;
+      padding: 10px 14px;
       border-bottom: 1px solid rgba(255,255,255,0.10);
       display:flex; justify-content:space-between; align-items:center;
-    }
-    .grab{
-      width: 44px; height: 5px; border-radius:999px;
-      background: rgba(255,255,255,0.18);
-      margin: 6px auto 0;
     }
     .sheetTitle{font-weight:900; letter-spacing:.2px;}
     .sheetBody{ padding: 12px 14px 16px; overflow:auto; max-height: calc(82vh - 56px); }
@@ -262,9 +231,9 @@
       margin-bottom: 10px;
     }
     .cartItem img{ width:64px; height:64px; border-radius:14px; object-fit:cover; }
-    .ciMain{flex:1; display:flex; flex-direction:column; gap:4px;}
+    .ciMain{flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;}
     .ciName{font-weight:900; font-size: 13px;}
-    .ciMeta{color:var(--muted); font-size:12px;}
+    .ciMeta{color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
     .ciControls{display:flex; gap:8px; align-items:center;}
     .miniBtn{
       width:34px; height:34px; border-radius: 12px;
@@ -274,6 +243,7 @@
       font-weight:900;
       cursor:pointer;
     }
+
     .totalBox{
       margin-top: 12px;
       padding: 12px;
@@ -283,12 +253,8 @@
       display:flex; justify-content:space-between; align-items:center;
       font-weight:900;
     }
-    .form{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
+
+    .form{margin-top: 12px; display:grid; gap:10px;}
     .field{
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05);
@@ -299,42 +265,36 @@
       font-size: 14px;
     }
     .field::placeholder{ color: rgba(255,255,255,0.38); }
-    .row2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+    .small{font-size:12px; color:var(--muted); line-height:1.35}
     .sendRow{display:flex; gap:10px; margin-top: 12px;}
     .sendRow .btn{flex:1}
-    .small{font-size:12px; color:var(--muted); line-height:1.35}
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(214,179,106,0.98), rgba(214,179,106,0.62));
+      border:1px solid rgba(214,179,106,0.55);
+      color:#0b0b0f;
+    }
 
-    /* Pages */
-    .page{ display:none; }
-    .page.active{ display:block; }
-    .aboutCard, .contactCard{
+    .page{display:none;}
+    .page.active{display:block;}
+    .infoCard{
+      margin-top: 14px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.05);
-      border-radius: var(--radius2);
+      border-radius: var(--r22);
       box-shadow: var(--shadow);
       padding: 16px;
       line-height:1.45;
       color: rgba(255,255,255,0.88);
     }
-    .aboutCard b{color: var(--gold2)}
-    a{ color: var(--gold2); text-decoration: none; }
-    a:hover{ text-decoration: underline; }
+    .infoCard b{color: var(--gold2);}
   </style>
 </head>
 
 <body>
   <script>
-    // Telegram init
     const tg = window.Telegram?.WebApp;
-    if (tg) {
-      document.body.classList.add("tg");
-      tg.ready();
-      tg.expand();
-    }
+    if (tg) { tg.ready(); tg.expand(); }
   </script>
 
   <div class="wrap">
@@ -343,94 +303,69 @@
         <div class="name">AsmarA.handmade</div>
         <div class="tag">Luxury handmade leather • Milano / Dubai mood</div>
       </div>
-      <div class="pill"><span>by</span> <b>Asmar Alyeva</b></div>
+      <div class="sig">by Asmar Alyeva</div>
     </div>
 
-    <div class="grid">
-      <div class="hero">
-        <div class="h-title">Каталог</div>
-        <div class="h-sub">
-          Натуральная кожа, аккуратные швы и премиальная фурнитура.
-          Собери корзину и отправь заказ — я напишу для подтверждения ✨
-        </div>
-        <div class="h-row">
-          <div class="chip">🧵 Полностью ручная работа</div>
-          <div class="chip">✨ Небольшие партии</div>
-          <div class="chip">👜 Сумки & 💳 Картхолдеры</div>
-        </div>
+    <div class="hero">
+      <h1>Каталог</h1>
+      <p>Выбери изделие → добавь в корзину → отправь заказ. Я напишу для подтверждения ✨</p>
+      <div class="chips">
+        <div class="chip">🧵 Ручная работа</div>
+        <div class="chip">✨ Премиальная отделка</div>
+        <div class="chip">🤍 Небольшие партии</div>
       </div>
+    </div>
 
-      <!-- PAGES -->
-      <div class="page active" id="page-catalog" style="grid-column:1/-1;">
-        <div class="sectionTitle">
-          <h2>Сумки</h2>
-          <div class="muted">выбери модель • добавь в корзину</div>
+    <div class="page active" id="page-catalog">
+      <div class="section">
+        <div class="sectionHead">
+          <h2>Сумки</h2><span>выбери модель</span>
         </div>
         <div class="grid" id="bagsGrid"></div>
+      </div>
 
-        <div class="sectionTitle" style="margin-top:14px;">
-          <h2>Картхолдеры</h2>
-          <div class="muted">минимализм • премиум кожа</div>
+      <div class="section">
+        <div class="sectionHead">
+          <h2>Картхолдеры</h2><span>минимализм</span>
         </div>
         <div class="grid" id="cardsGrid"></div>
       </div>
+    </div>
 
-      <div class="page" id="page-about" style="grid-column:1/-1;">
-        <div class="sectionTitle">
-          <h2>Обо мне</h2>
-          <div class="muted">история бренда</div>
-        </div>
-        <div class="aboutCard">
-          <b>AsmarA.handmade</b> — это премиальная кожгалантерея ручной работы.
-          Я создаю изделия вручную: от раскроя до финальной отделки.
-          <br><br>
-          ✨ Внимание к деталям и идеальная посадка фурнитуры<br>
-          🧵 Ровные швы и аккуратная кромка<br>
-          🤍 Небольшие партии и индивидуальный подход
-          <br><br>
-          Хочешь персонализацию (цвет/нитки/инициалы)? Напиши — сделаем красиво.
-        </div>
-      </div>
-
-      <div class="page" id="page-contacts" style="grid-column:1/-1;">
-        <div class="sectionTitle">
-          <h2>Контакты</h2>
-          <div class="muted">быстрый ответ</div>
-        </div>
-        <div class="contactCard">
-          📷 Instagram: <a href="#" id="igLink">открыть</a><br>
-          💬 WhatsApp: <a href="#" id="waLink">открыть</a><br>
-          <br>
-          <div class="small">
-            После отправки заказа я напишу тебе в Telegram для подтверждения деталей и доставки ✨
-          </div>
-        </div>
+    <div class="page" id="page-brand">
+      <div class="infoCard">
+        <b>AsmarA.handmade</b> — премиальная кожгалантерея ручной работы.
+        <br><br>
+        Я создаю изделия вручную: раскрой, шитьё, обработка кромки, установка фурнитуры и финальная отделка.
+        <br><br>
+        ✨ Идеальные детали и аккуратные швы<br>
+        🧵 Ручная работа на каждом этапе<br>
+        🤍 Индивидуальный подход
+        <br><br>
+        Открой “Корзину” снизу, чтобы отправить заказ.
       </div>
     </div>
   </div>
 
-  <!-- Bottom navigation -->
+  <!-- Bottom bar -->
   <div class="bottomBar">
     <div class="nav">
       <div class="navBtn active" id="navCatalog" onclick="switchPage('catalog')">
-        <div>🛍️</div><div>Каталог</div>
+        🛍️ <span>Каталог</span>
       </div>
       <div class="navBtn" id="navCart" onclick="openCart()">
-        <div>🧾</div><div>Корзина</div>
-        <div class="badge" id="cartBadge" style="display:none;">0</div>
+        🧾 <span>Корзина</span>
+        <div class="count" id="cartCount">0</div>
       </div>
-      <div class="navBtn" id="navAbout" onclick="switchPage('about')">
-        <div>ℹ️</div><div>Обо мне</div>
-      </div>
-      <div class="navBtn" id="navContacts" onclick="switchPage('contacts')">
-        <div>📩</div><div>Контакты</div>
+      <div class="navBtn" id="navBrand" onclick="switchPage('brand')">
+        ✨ <span>О бренде</span>
       </div>
     </div>
   </div>
 
   <!-- Cart sheet -->
-  <div class="sheetMask" id="mask" onclick="closeCart()"></div>
-  <div class="sheet" id="sheet" aria-hidden="true">
+  <div class="mask" id="mask" onclick="closeCart()"></div>
+  <div class="sheet" id="sheet">
     <div class="grab"></div>
     <div class="sheetHead">
       <div class="sheetTitle">Корзина</div>
@@ -451,232 +386,198 @@
           <input class="field" id="city" placeholder="Город" />
         </div>
         <input class="field" id="delivery" placeholder="Доставка (курьер/почта/самовывоз)" />
-        <textarea class="field" id="comment" rows="3" placeholder="Комментарий (цвет, размер, пожелания)"></textarea>
-        <div class="small">
-          Нажимая “Отправить заказ”, ты отправляешь данные в бот для подтверждения.
-        </div>
+        <textarea class="field" id="comment" rows="3" placeholder="Комментарий (цвет, пожелания)"></textarea>
+        <div class="small">Нажимая “Отправить заказ”, вы отправляете данные в Telegram-бот.</div>
       </div>
 
       <div class="sendRow">
         <button class="btn" onclick="clearCart()">Очистить</button>
-        <button class="btn primary" onclick="sendOrder()">Отправить заказ</button>
+        <button class="btn btnPrimary" onclick="sendOrder()">Отправить заказ</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== Config (можешь менять названия/цены) =====
-    const CONTACTS = {
-      instagram: "https://instagram.com/asmarA.handmade",
-      whatsapp:  "https://wa.me/31612345678"
-    };
+    // ВАЖНО: названия файлов должны совпадать с тем, что в репозитории!
+    // Положи фото в папку: /assets/
+    // Пример: assets/bag1.jpg  assets/bag2.jpg  assets/bag3.jpg  assets/card1.jpg
 
     const CATALOG = {
       bags: [
-        {
-          id: "bag1",
-          name: "Milano Crossbody",
-          price: 220,
-          img: "./assets/bag1.jpg",
-          desc: "Натуральная кожа, премиальная фурнитура, идеальная форма."
-        },
-        {
-          id: "bag2",
-          name: "Dubai Classic",
-          price: 260,
-          img: "./assets/bag2.jpg",
-          desc: "Строгий силуэт, мягкий свет, люкс-настроение."
-        },
-        {
-          id: "bag3",
-          name: "Atelier Mini",
-          price: 190,
-          img: "./assets/bag3.jpg",
-          desc: "Компактный формат — максимум стиля и удобства."
-        }
+        { id:"bag1", name:"Milano Crossbody", price:220, img:"./assets/bag1.jpg", desc:"Натуральная кожа • премиальная фурнитура" },
+        { id:"bag2", name:"Dubai Classic",    price:260, img:"./assets/bag2.jpg", desc:"Строгий силуэт • люкс-детали" },
+        { id:"bag3", name:"Atelier Mini",     price:190, img:"./assets/bag3.jpg", desc:"Компактная • идеально на каждый день" }
       ],
       cards: [
-        {
-          id: "card1",
-          name: "Leather Cardholder",
-          price: 65,
-          img: "./assets/card1.jpg",
-          desc: "Минимализм, натуральная кожа, аккуратная кромка."
-        }
+        { id:"card1", name:"Leather Cardholder", price:65, img:"./assets/card1.jpg", desc:"Минимализм • тонкий профиль" }
       ]
     };
 
-    // ===== State =====
     const cart = new Map(); // id -> {id,name,price,img,qty}
 
-    // ===== UI helpers =====
     const el = (id) => document.getElementById(id);
 
-    function setActiveNav(key){
-      ["Catalog","Cart","About","Contacts"].forEach(k => el("nav"+k).classList.remove("active"));
-      if(key === "catalog") el("navCatalog").classList.add("active");
-      if(key === "cart") el("navCart").classList.add("active");
-      if(key === "about") el("navAbout").classList.add("active");
-      if(key === "contacts") el("navContacts").classList.add("active");
+    function setActiveNav(which){
+      ["Catalog","Cart","Brand"].forEach(x => el("nav"+x).classList.remove("active"));
+      if(which==="catalog") el("navCatalog").classList.add("active");
+      if(which==="brand") el("navBrand").classList.add("active");
+      // navCart active только когда открыт sheet
     }
 
-    function switchPage(key){
+    function switchPage(which){
       el("page-catalog").classList.remove("active");
-      el("page-about").classList.remove("active");
-      el("page-contacts").classList.remove("active");
-
-      if(key === "catalog") el("page-catalog").classList.add("active");
-      if(key === "about") el("page-about").classList.add("active");
-      if(key === "contacts") el("page-contacts").classList.add("active");
-
-      setActiveNav(key);
+      el("page-brand").classList.remove("active");
+      if(which==="catalog") el("page-catalog").classList.add("active");
+      if(which==="brand") el("page-brand").classList.add("active");
+      setActiveNav(which);
       window.scrollTo({top:0, behavior:"smooth"});
     }
 
     function money(v){ return `${v}€`; }
 
-    function cartCount(){
-      let n = 0;
-      cart.forEach(x => n += x.qty);
-      return n;
+    function countItems(){
+      let n=0; cart.forEach(x => n += x.qty); return n;
+    }
+    function total(){
+      let s=0; cart.forEach(x => s += x.qty * x.price); return s;
     }
 
-    function cartTotal(){
-      let sum = 0;
-      cart.forEach(x => sum += x.qty * x.price);
-      return sum;
-    }
-
-    function updateBadge(){
-      const n = cartCount();
-      const b = el("cartBadge");
-      if(n > 0){
-        b.style.display = "inline-block";
-        b.textContent = n;
+    function updateCount(){
+      const n = countItems();
+      const c = el("cartCount");
+      if(n>0){
+        c.style.display="block";
+        c.textContent = n;
       } else {
-        b.style.display = "none";
+        c.style.display="none";
       }
-    }
-
-    // ===== Catalog render =====
-    function productCard(p){
-      const qty = cart.get(p.id)?.qty || 0;
-      return `
-        <div class="product">
-          <div class="p-img">
-            <img src="${p.img}" alt="${p.name}" loading="lazy" />
-          </div>
-          <div class="p-body">
-            <div class="p-top">
-              <div class="p-name">${p.name}</div>
-              <div class="p-price">${money(p.price)}</div>
-            </div>
-            <div class="p-desc">${p.desc}</div>
-            <div class="p-actions">
-              <button class="btn primary" onclick="addToCart('${p.id}')">Добавить</button>
-              <div class="qty">В корзине: <b style="color:var(--gold2)">${qty}</b></div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderCatalog(){
-      el("bagsGrid").innerHTML = CATALOG.bags.map(productCard).join("");
-      el("cardsGrid").innerHTML = CATALOG.cards.map(productCard).join("");
-      updateBadge();
+      el("totalPrice").textContent = money(total());
     }
 
     function findProduct(id){
-      return [...CATALOG.bags, ...CATALOG.cards].find(p => p.id === id);
+      return [...CATALOG.bags, ...CATALOG.cards].find(p => p.id===id);
     }
 
     function addToCart(id){
       const p = findProduct(id);
       if(!p) return;
-      const current = cart.get(id);
-      if(current) current.qty += 1;
+      const cur = cart.get(id);
+      if(cur) cur.qty += 1;
       else cart.set(id, {id:p.id, name:p.name, price:p.price, img:p.img, qty:1});
       renderCatalog();
       renderCart();
-      // subtle feedback
+      updateCount();
       if(window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred("light");
     }
 
-    function decCart(id){
-      const current = cart.get(id);
-      if(!current) return;
-      current.qty -= 1;
-      if(current.qty <= 0) cart.delete(id);
+    function dec(id){
+      const cur = cart.get(id);
+      if(!cur) return;
+      cur.qty -= 1;
+      if(cur.qty<=0) cart.delete(id);
       renderCatalog();
       renderCart();
-      updateBadge();
+      updateCount();
     }
 
-    function incCart(id){
-      addToCart(id);
-    }
+    function inc(id){ addToCart(id); }
 
     function clearCart(){
       cart.clear();
       renderCatalog();
       renderCart();
-      updateBadge();
+      updateCount();
     }
 
-    // ===== Cart sheet =====
+    function productCard(p){
+      const qty = cart.get(p.id)?.qty || 0;
+      const html = document.createElement("div");
+      html.className = "card";
+      html.innerHTML = `
+        <div class="img">
+          <img src="${p.img}" alt="${p.name}" loading="lazy" />
+          <div class="fallback">Фото не найдено</div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <div class="name">${p.name}</div>
+            <div class="price">${money(p.price)}</div>
+          </div>
+          <div class="desc">${p.desc}</div>
+          <div class="actions">
+            <button class="btn" type="button">Добавить</button>
+            <div class="qty">В корзине: <b>${qty}</b></div>
+          </div>
+        </div>
+      `;
+      const img = html.querySelector("img");
+      const fb = html.querySelector(".fallback");
+      img.addEventListener("error", () => { fb.style.display="inline-flex"; });
+      html.querySelector("button").addEventListener("click", () => addToCart(p.id));
+      return html;
+    }
+
+    function renderCatalog(){
+      const bagsGrid = el("bagsGrid");
+      const cardsGrid = el("cardsGrid");
+      bagsGrid.innerHTML = "";
+      cardsGrid.innerHTML = "";
+      CATALOG.bags.forEach(p => bagsGrid.appendChild(productCard(p)));
+      CATALOG.cards.forEach(p => cardsGrid.appendChild(productCard(p)));
+    }
+
+    function cartRow(x){
+      const div = document.createElement("div");
+      div.className = "cartItem";
+      div.innerHTML = `
+        <img src="${x.img}" alt="${x.name}" />
+        <div class="ciMain">
+          <div class="ciName">${x.name}</div>
+          <div class="ciMeta">${x.qty} × ${money(x.price)} = <b style="color:var(--gold2)">${money(x.qty*x.price)}</b></div>
+        </div>
+        <div class="ciControls">
+          <button class="miniBtn" type="button">−</button>
+          <button class="miniBtn" type="button">+</button>
+        </div>
+      `;
+      const btns = div.querySelectorAll(".miniBtn");
+      btns[0].addEventListener("click", () => dec(x.id));
+      btns[1].addEventListener("click", () => inc(x.id));
+      return div;
+    }
+
+    function renderCart(){
+      const list = el("cartList");
+      list.innerHTML = "";
+      const items = [...cart.values()];
+      if(items.length===0){
+        const empty = document.createElement("div");
+        empty.className = "small";
+        empty.textContent = "Корзина пустая. Добавь товары из каталога ✨";
+        list.appendChild(empty);
+        return;
+      }
+      items.forEach(x => list.appendChild(cartRow(x)));
+    }
+
     function openCart(){
-      setActiveNav("cart");
-      el("mask").style.display = "block";
+      el("mask").style.display="block";
       el("sheet").classList.add("open");
-      el("sheet").setAttribute("aria-hidden","false");
+      el("navCart").classList.add("active");
       renderCart();
+      updateCount();
     }
 
     function closeCart(){
       el("sheet").classList.remove("open");
-      el("sheet").setAttribute("aria-hidden","true");
-      el("mask").style.display = "none";
-      // возвращаем активный таб на каталог
+      el("mask").style.display="none";
+      el("navCart").classList.remove("active");
       setActiveNav("catalog");
     }
 
-    function cartItemRow(x){
-      return `
-        <div class="cartItem">
-          <img src="${x.img}" alt="${x.name}" />
-          <div class="ciMain">
-            <div class="ciName">${x.name}</div>
-            <div class="ciMeta">${x.qty} × ${money(x.price)} = <b style="color:var(--gold2)">${money(x.qty * x.price)}</b></div>
-          </div>
-          <div class="ciControls">
-            <button class="miniBtn" onclick="decCart('${x.id}')">−</button>
-            <button class="miniBtn" onclick="incCart('${x.id}')">+</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderCart(){
-      const items = [...cart.values()];
-      el("cartList").innerHTML = items.length
-        ? items.map(cartItemRow).join("")
-        : `<div class="small">Корзина пустая. Добавь товары из каталога ✨</div>`;
-
-      el("totalPrice").textContent = money(cartTotal());
-      updateBadge();
-    }
-
-    // ===== Send order to bot =====
     function sendOrder(){
-      const items = [...cart.values()].map(x => ({
-        id: x.id, name: x.name, price: x.price, qty: x.qty
-      }));
-
-      if(items.length === 0){
-        alert("Корзина пустая. Добавь товары 🙂");
-        return;
-      }
+      const items = [...cart.values()].map(x => ({id:x.id, name:x.name, price:x.price, qty:x.qty}));
+      if(items.length===0){ alert("Корзина пустая 🙂"); return; }
 
       const customer = {
         name: el("name").value.trim(),
@@ -686,33 +587,19 @@
         comment: el("comment").value.trim(),
       };
 
-      const payload = {
-        items,
-        customer,
-        totals: { grand: cartTotal() },
-        note: "order_from_webapp_v1"
-      };
+      const payload = { items, customer, totals: { grand: total() } };
 
       const tg = window.Telegram?.WebApp;
-      if(!tg){
-        alert("Открой WebApp внутри Telegram, пожалуйста.");
-        return;
-      }
+      if(!tg){ alert("Открой WebApp внутри Telegram."); return; }
 
       tg.sendData(JSON.stringify(payload));
       tg.HapticFeedback?.notificationOccurred?.("success");
       tg.close();
     }
 
-    // links
-    el("igLink").href = CONTACTS.instagram;
-    el("igLink").textContent = CONTACTS.instagram.replace("https://", "");
-    el("waLink").href = CONTACTS.whatsapp;
-    el("waLink").textContent = CONTACTS.whatsapp.replace("https://", "");
-
     // init
     renderCatalog();
-    renderCart();
+    updateCount();
   </script>
 </body>
 </html>
