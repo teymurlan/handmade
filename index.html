@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>AsmarHandmade</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ASMARhandmade</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -11,15 +11,19 @@
   <style>
     :root {
       --gold: #C5A059;
-      --gold-soft: rgba(197,160,89,.18);
+      --gold2: #E3C27A;
       --dark: #121212;
       --bg: #F9F9F9;
       --card-bg: #FFFFFF;
       --text-main: #1A1A1A;
       --text-muted: #888888;
       --line: rgba(0,0,0,0.07);
-      --shadow: 0 10px 26px rgba(0,0,0,0.06);
-      --shadow2: 0 4px 14px rgba(0,0,0,0.05);
+      --shadow: 0 14px 34px rgba(0,0,0,0.06);
+      --shadow2: 0 6px 16px rgba(0,0,0,0.05);
+
+      --nav-h: 66px;
+      --nav-gap: 15px;
+      --safe-b: env(safe-area-inset-bottom);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -27,7 +31,7 @@
       font-family: 'Montserrat', sans-serif;
       background-color: var(--bg);
       color: var(--text-main);
-      padding-bottom: 90px;
+      padding-bottom: calc(var(--nav-h) + var(--nav-gap) + 18px + var(--safe-b));
     }
 
     /* --- HEADER --- */
@@ -63,17 +67,17 @@
       width: 100%;
       padding: 12px 42px 12px 14px;
       border: 1px solid #E5E5E5;
-      border-radius: 12px;
+      border-radius: 14px;
       font-family: inherit;
       font-size: 13px;
       outline: none;
-      transition: border 0.3s, box-shadow .3s;
+      transition: border 0.25s, box-shadow .25s;
       background:
         var(--card-bg)
         url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23888" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>')
         no-repeat 95% center;
     }
-    .search-box:focus { border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-soft); }
+    .search-box:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(197,160,89,.18); }
 
     .categories {
       display: flex;
@@ -91,11 +95,11 @@
       background: transparent;
       font-family: inherit;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
       cursor: pointer;
       color: var(--text-muted);
-      transition: .25s;
+      transition: .22s;
     }
     .cat-btn.active { background: var(--dark); color: #FFF; border-color: var(--dark); }
 
@@ -107,12 +111,14 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- CATALOG GRID (smaller cards like last premium build) --- */
+    /* --- CATALOG GRID: cards longer down, not wider --- */
     .catalog {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      padding: 0 15px 20px;
+      padding: 0 15px 18px;
+      /* важное: чтобы карточки "почти доходили" до панели снизу */
+      margin-bottom: calc(var(--nav-h) + var(--nav-gap) - 10px);
     }
     @media (min-width: 900px){
       .catalog { grid-template-columns: repeat(4, 1fr); }
@@ -120,27 +126,26 @@
 
     .product-card {
       background: var(--card-bg);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow2);
       border: 1px solid rgba(0,0,0,0.03);
-      transition: transform .18s ease, box-shadow .18s ease;
       cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
     }
     .product-card:active { transform: scale(.99); }
 
-    /* smaller media to match your request */
     .product-img-box {
       width: 100%;
-      height: 190px;
+      height: 210px; /* чуть выше = карточка длиннее вниз */
       background: #F0F0F0;
       position: relative;
       overflow: hidden;
     }
     @media (min-width: 900px){
-      .product-img-box { height: 210px; }
+      .product-img-box { height: 230px; }
     }
     .product-img-box img {
       width: 100%;
@@ -155,87 +160,173 @@
       top:10px; left:10px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.88);
       border: 1px solid rgba(0,0,0,0.06);
       font-size: 10px;
-      font-weight: 700;
-      color: rgba(18,18,18,.72);
+      font-weight: 800;
+      color: rgba(18,18,18,.74);
       backdrop-filter: blur(8px);
     }
 
     .product-info {
-      padding: 10px 10px 12px;
+      padding: 11px 11px 12px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       justify-content: space-between;
       background: #fff;
+      min-height: 148px; /* удлиняем карточку вниз */
     }
     .product-name {
       font-size: 11.5px;
-      font-weight: 600;
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin-bottom: 7px;
       line-height: 1.25;
       color: var(--text-main);
-      min-height: 30px;
+      min-height: 32px;
     }
     .product-price {
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--gold);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      letter-spacing: .02em;
     }
 
+    /* --- Premium "Add to cart" button --- */
     .btn-add {
       width: 100%;
-      background: linear-gradient(180deg, rgba(197,160,89,.20), rgba(255,255,255,1));
-      color: var(--dark);
-      border: 1px solid rgba(197,160,89,.35);
-      padding: 9px 0;
-      border-radius: 10px;
+      border: 1px solid rgba(197,160,89,.45);
+      padding: 10px 0;
+      border-radius: 12px;
       font-size: 10px;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
       cursor: pointer;
-      letter-spacing: .08em;
-      transition: .2s;
+      letter-spacing: .12em;
+      color: #1b140a;
+      background:
+        radial-gradient(120px 60px at 50% 0%, rgba(255,255,255,.55), transparent 60%),
+        linear-gradient(180deg, rgba(227,194,122,.52), rgba(255,255,255,.96));
+      box-shadow: 0 10px 24px rgba(197,160,89,.18);
+      position: relative;
+      overflow: hidden;
     }
-    .btn-add:active { background: var(--dark); color: #FFF; border-color: var(--dark); }
+    .btn-add::after{
+      content:"";
+      position:absolute;
+      inset:-40% -20%;
+      background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%);
+      transform: translateX(-60%);
+      transition: transform .55s ease;
+    }
+    .btn-add:active { background: var(--dark); color:#fff; border-color: var(--dark); box-shadow:none; }
+    .btn-add:hover::after{ transform: translateX(60%); }
 
-    /* --- ABOUT / CONTACTS --- */
-    .page-content { padding: 28px 20px; text-align: center; }
-    .page-title { font-family: 'Cinzel', serif; font-size: 20px; margin-bottom: 18px; color: var(--dark); }
-    .page-text { font-size: 13px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; }
+    /* --- STATIC PAGES (ABOUT / CONTACTS) --- */
+    .page-content { padding: 26px 18px; text-align: center; }
+
+    .brand-hero{
+      max-width: 740px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .brand-cover{
+      height: 220px;
+      background: #eee;
+      position: relative;
+    }
+    .brand-cover img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      filter: contrast(1.02) saturate(1.02);
+    }
+    .brand-cover::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 45%, rgba(255,255,255,.92));
+    }
+    .brand-body{
+      padding: 16px 16px 18px;
+      text-align:left;
+    }
+    .page-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      margin: 0 0 10px;
+      color: var(--dark);
+      text-align:center;
+    }
+    .brand-sub{
+      text-align:center;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.55);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .page-text {
+      font-size: 13.3px;
+      line-height: 1.65;
+      color: rgba(0,0,0,.62);
+      margin-bottom: 14px;
+    }
+    .brand-list{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .brand-point{
+      border: 1px solid rgba(0,0,0,0.06);
+      background: rgba(249,249,249,.7);
+      border-radius: 14px;
+      padding: 12px 12px;
+      box-shadow: var(--shadow2);
+      font-size: 12.5px;
+      color: rgba(0,0,0,.70);
+    }
+    .brand-point b{ color: rgba(0,0,0,.82); }
+
     .contact-link {
       display: block;
       padding: 14px;
       margin-bottom: 10px;
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       text-decoration: none;
       color: var(--dark);
-      font-weight: 600;
+      font-weight: 800;
       border: 1px solid #E5E5E5;
       transition: 0.2s;
       box-shadow: var(--shadow2);
+      max-width: 520px;
+      margin-left:auto;
+      margin-right:auto;
     }
     .contact-link:active { border-color: var(--gold); }
 
     /* --- BOTTOM NAVIGATION --- */
     .bottom-nav {
       position: fixed;
-      bottom: 15px;
+      bottom: var(--nav-gap);
       left: 50%;
       transform: translateX(-50%);
       width: 92%;
-      height: 66px;
+      height: var(--nav-h);
       background: rgba(18, 18, 18, 0.95);
       backdrop-filter: blur(10px);
       border-radius: 22px;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
       z-index: 1000;
     }
     .nav-item {
@@ -244,7 +335,7 @@
       align-items: center;
       color: #777;
       font-size: 9px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       width: 25%;
       position: relative;
@@ -298,8 +389,8 @@
     }
     .cart-sheet.open { bottom: 0; }
 
-    .sheet-handle { width: 40px; height: 4px; background: #DDD; border-radius: 2px; margin: 0 auto 14px; }
-    .cart-title { font-family: 'Cinzel', serif; font-size: 18px; text-align: center; margin-bottom: 12px; }
+    .sheet-handle { width: 42px; height: 4px; background: #DDD; border-radius: 2px; margin: 0 auto 12px; }
+    .cart-title { font-family: 'Cinzel', serif; font-size: 18px; text-align: center; margin-bottom: 10px; }
 
     .cart-items { flex-grow: 1; overflow-y: auto; margin-bottom: 12px; padding-right: 2px; }
     .cart-item-row {
@@ -307,14 +398,14 @@
       align-items: center;
       padding: 10px;
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       margin-bottom: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.03);
       border: 1px solid rgba(0,0,0,0.03);
     }
     .cart-item-img {
-      width: 52px; height: 52px;
-      border-radius: 10px;
+      width: 54px; height: 54px;
+      border-radius: 12px;
       object-fit: cover;
       margin-right: 12px;
       background:#F0F0F0;
@@ -323,14 +414,14 @@
     .cart-item-info { flex-grow: 1; min-width: 0; }
     .cart-item-name {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 800;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .cart-item-price {
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--gold);
       margin-top: 4px;
     }
@@ -340,22 +431,22 @@
       align-items: center;
       gap: 8px;
       background: #f3f3f3;
-      border-radius: 10px;
-      padding: 4px;
+      border-radius: 12px;
+      padding: 5px;
     }
     .qty-btn {
       background: #FFF;
       border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
       font-size: 14px;
       color: var(--dark);
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.10);
       font-weight: 900;
     }
-    .qty-num { font-size: 12px; font-weight: 700; min-width: 14px; text-align: center; }
+    .qty-num { font-size: 12px; font-weight: 800; min-width: 14px; text-align: center; }
 
     .cart-total {
       font-size: 15px;
@@ -371,47 +462,55 @@
       padding: 14px;
       margin-bottom: 10px;
       border: 1px solid #E5E5E5;
-      border-radius: 12px;
+      border-radius: 14px;
       font-family: inherit;
       font-size: 13px;
       outline: none;
       transition: box-shadow .25s, border-color .25s;
       background: #fff;
     }
-    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-soft); }
+    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(197,160,89,.18); }
 
     .btn-order {
-      background: var(--gold);
-      color: #FFF;
+      background: linear-gradient(180deg, var(--gold2), var(--gold));
+      color: #1b140a;
       border: none;
       width: 100%;
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 14px;
       font-family: inherit;
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 950;
       text-transform: uppercase;
       cursor: pointer;
-      letter-spacing: .10em;
+      letter-spacing: .12em;
+      box-shadow: 0 16px 34px rgba(197,160,89,.22);
     }
+    .btn-order:active{ background: var(--dark); color:#fff; box-shadow:none; }
 
     .sheet-actions{
       display:flex;
       gap:10px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
     .btn-secondary{
       width: 100%;
       padding: 13px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid #E5E5E5;
       background: #fff;
       color: var(--dark);
-      font-weight: 900;
-      letter-spacing: .08em;
+      font-weight: 950;
+      letter-spacing: .10em;
       text-transform: uppercase;
       font-size: 12px;
       cursor:pointer;
+      box-shadow: var(--shadow2);
+    }
+
+    /* чтобы клавиатура не перекрывала кнопку на телефоне */
+    .checkout-pad{
+      padding-bottom: 140px; /* запас под клавиатуру */
     }
 
     /* --- QUICK VIEW MODAL --- */
@@ -434,24 +533,24 @@
       box-shadow: 0 22px 70px rgba(0,0,0,.25);
       border: 1px solid rgba(0,0,0,.06);
     }
-    .modal-img{height: 260px; background:#F0F0F0}
+    .modal-img{height: 280px; background:#F0F0F0}
     .modal-img img{width:100%; height:100%; object-fit:cover; display:block}
     .modal-body{padding: 14px 14px 12px}
-    .modal-name{font-weight: 900; font-size: 14px; margin-bottom: 6px}
-    .modal-price{font-weight: 900; color: var(--gold); margin-bottom: 10px}
-    .modal-desc{font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px}
+    .modal-name{font-weight: 950; font-size: 14px; margin-bottom: 6px}
+    .modal-price{font-weight: 950; color: var(--gold); margin-bottom: 10px}
+    .modal-desc{font-size: 13px; color: rgba(0,0,0,.62); line-height: 1.6; margin-bottom: 12px}
     .modal-row{display:flex; gap:10px}
     .modal-close{
       border: 1px solid #E5E5E5;
       background: #fff;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 11px 12px;
-      font-weight: 900;
+      font-weight: 950;
       cursor:pointer;
       width: 40%;
+      box-shadow: var(--shadow2);
     }
 
-    /* Small helper */
     .hint-empty{
       grid-column: span 2;
       text-align:center;
@@ -465,7 +564,7 @@
 <body>
 
   <div class="header">
-    <div class="logo">AsmarHandmade</div>
+    <div class="logo">ASMARhandmade</div>
     <div class="subtitle">Handmade Premium Leather</div>
   </div>
 
@@ -483,24 +582,43 @@
 
   <div id="view-about" class="view">
     <div class="page-content">
-      <h2 class="page-title">О Бренде</h2>
-      <img src="https://images.unsplash.com/photo-1606240292854-e4612470a1e3?auto=format&fit=crop&w=300&q=80"
-           style="width: 104px; height: 104px; border-radius: 50%; margin-bottom: 18px; object-fit: cover; border: 2px solid rgba(197,160,89,.25);"
-           alt="AsmarHandmade">
-      <p class="page-text">
-        <b>AsmarHandmade</b> — это элегантность и качество. Каждое изделие создаётся вручную из премиальной кожи и фурнитуры.
-        <br><br>Вдохновение: архитектура Милана и роскошь Дубая — аксессуары, которые подчёркивают стиль.
-      </p>
+      <div class="brand-hero">
+        <div class="brand-cover">
+          <img src="https://images.unsplash.com/photo-1520975958225-15e7b0b7d1c5?auto=format&fit=crop&w=1600&q=80" alt="Brand">
+        </div>
+        <div class="brand-body">
+          <h2 class="page-title">О бренде</h2>
+          <div class="brand-sub">Milano precision • Dubai luxury</div>
+
+          <p class="page-text">
+            <b>ASMARhandmade</b> — это премиальная кожгалантерея ручной работы, созданная для тех,
+            кто ценит эстетику, статус и идеальные детали.
+            <br><br>
+            Мы работаем с натуральной кожей и фурнитурой премиум-класса, уделяя внимание каждой строчке —
+            от раскроя до финальной полировки кромки.
+          </p>
+
+          <div class="brand-list">
+            <div class="brand-point"><b>Ручные швы</b> — точная геометрия и долговечность</div>
+            <div class="brand-point"><b>Премиум кожа</b> — фактура, которая выглядит дорого</div>
+            <div class="brand-point"><b>Малые партии</b> — максимум качества и контроль каждой работы</div>
+          </div>
+
+          <p class="page-text" style="margin-top:14px;">
+            Открой каталог, выбери изделие и оформи заказ — мы свяжемся с вами для подтверждения деталей и сроков 🤍
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="view-contacts" class="view">
     <div class="page-content">
-      <h2 class="page-title">Связь с нами</h2>
-      <p class="page-text">Нужен индивидуальный заказ? Напишите нам.</p>
-      <a href="https://t.me/ваш_username" class="contact-link" target="_blank">✈️ Написать в Telegram</a>
-      <a href="https://instagram.com/ваш_instagram" class="contact-link" target="_blank">📸 Наш Instagram</a>
-      <a href="tel:+70000000000" class="contact-link">📞 +7 (000) 000-00-00</a>
+      <h2 class="page-title">Связь</h2>
+      <p class="page-text">Напишите нам — поможем выбрать модель, цвет и обсудим детали.</p>
+      <a href="https://t.me/teymurlan" class="contact-link" target="_blank">✈️ Telegram: @teymurlan</a>
+      <a href="https://instagram.com/ваш_instagram" class="contact-link" target="_blank">📸 Instagram</a>
+      <a href="tel:+70000000000" class="contact-link">📞 Телефон</a>
     </div>
   </div>
 
@@ -540,13 +658,13 @@
       <span id="total-price" style="color: var(--gold);">0 ₽</span>
     </div>
 
-    <div id="checkout-form" style="display: none;">
-      <input type="text" id="userName" class="form-input" placeholder="Ваше Имя">
-      <input type="tel" id="userPhone" class="form-input" placeholder="Номер телефона / Telegram">
-      <input type="text" id="userAddress" class="form-input" placeholder="Адрес доставки (необязательно)">
-      <textarea id="userComment" class="form-input" style="min-height:84px; resize:none;" placeholder="Комментарий к заказу (цвет, фурнитура, пожелания)"></textarea>
+    <div id="checkout-form" class="checkout-pad" style="display: none;">
+      <input type="text" id="userName" class="form-input" placeholder="Ваше имя *" required>
+      <input type="tel" id="userPhone" class="form-input" placeholder="Телефон / Telegram *" required>
+      <input type="text" id="userAddress" class="form-input" placeholder="Адрес доставки *" required>
+      <textarea id="userComment" class="form-input" style="min-height:86px; resize:none;" placeholder="Комментарий (необязательно)"></textarea>
 
-      <button class="btn-order" onclick="sendOrder()">ОФОРМИТЬ ЗАКАЗ</button>
+      <button class="btn-order" id="btnOrder" onclick="sendOrder()">ОФОРМИТЬ ЗАКАЗ</button>
 
       <div class="sheet-actions">
         <button class="btn-secondary" onclick="clearCart()">ОЧИСТИТЬ КОРЗИНУ</button>
@@ -563,14 +681,12 @@
         <div class="modal-price" id="modalPrice"></div>
         <div class="modal-desc" id="modalDesc"></div>
         <div class="modal-row">
-          <button class="btn-add" style="height:44px;border-radius:12px;" id="modalAddBtn">+ В КОРЗИНУ</button>
+          <button class="btn-add" style="height:44px;border-radius:14px;" id="modalAddBtn">+ В КОРЗИНУ</button>
           <button class="modal-close" onclick="closeModal()">Закрыть</button>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="toast" id="toast"></div>
 
   <script>
     // Telegram safe init
@@ -580,42 +696,42 @@
       try { tg.MainButton.hide(); } catch(e){}
     }
 
-    // --- PRODUCTS ---
-    // IMPORTANT: image paths must match your GitHub assets filenames (e.g. bag1.jpg.png)
+    // Products: FIXED 3 bags
     const products = [
-      { id: "p1", name: "Сумка 'Milano Black'", price: 15000, category: "Сумки", image: "./assets/bag1.jpg.png", desc: "Премиальная кожа • ручные швы • идеальная форма." },
-      { id: "p2", name: "Сумка 'Dubai Gold'",  price: 18500, category: "Сумки", image: "./assets/bag2.jpg.png", desc: "Элегантный силуэт • фурнитура премиум • люкс-эстетика." },
-      { id: "p3", name: "Картхолдер Classic",  price: 3500,  category: "Картхолдеры", image: "./assets/card1.jpg.png", desc: "Тонкий профиль • удобные отделения • аккуратная кромка." },
-      { id: "p4", name: "Картхолдер Premium",  price: 4500,  category: "Картхолдеры", image: "./assets/card2.jpg.png", desc: "Минимализм и статус • идеален на каждый день." }
+      { id: "b1", name: "Сумка 'Milano Black'", price: 15000, category: "Сумки", image: "./assets/bag1.jpg.png", desc: "Премиальная кожа • ручные швы • точная геометрия." },
+      { id: "b2", name: "Сумка 'Dubai Gold'",  price: 18500, category: "Сумки", image: "./assets/bag2.jpg.png", desc: "Элегантный силуэт • фурнитура премиум • люкс-эстетика." },
+      { id: "b3", name: "Сумка 'Bergamo'",     price: 17000, category: "Сумки", image: "./assets/bag3.jpg.png", desc: "Чистая форма • минимализм • идеальна на каждый день." },
+
+      { id: "c1", name: "Картхолдер Classic",  price: 3500,  category: "Картхолдеры", image: "./assets/card1.jpg.png", desc: "Тонкий профиль • аккуратная кромка • удобные отделения." },
+      { id: "c2", name: "Картхолдер Premium",  price: 4500,  category: "Картхолдеры", image: "./assets/card2.jpg.png", desc: "Минимализм и статус • премиальная кожа • ручная работа." }
     ];
 
-    // --- CART (persist) ---
-    const CART_KEY = "asmar_cart_v1";
-    let cart = loadCart(); // { "p1": 2, "p3": 1 }
+    // cart persistence
+    const CART_KEY = "asmar_cart_v2";
+    let cart = loadCart(); // {id: qty}
     let currentCategory = 'Все';
 
     function loadCart(){
-      try {
-        const raw = localStorage.getItem(CART_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch(e){ return {}; }
+      try { return JSON.parse(localStorage.getItem(CART_KEY) || "{}"); }
+      catch(e){ return {}; }
     }
     function saveCart(){
       try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e){}
     }
 
-    // --- HAPTIC safe ---
-    function hImpact(type){
-      try { tg?.HapticFeedback?.impactOccurred(type); } catch(e){}
-    }
-    function hSelect(){
-      try { tg?.HapticFeedback?.selectionChanged(); } catch(e){}
-    }
-    function hNotify(type){
-      try { tg?.HapticFeedback?.notificationOccurred(type); } catch(e){}
+    function hImpact(type){ try { tg?.HapticFeedback?.impactOccurred(type); } catch(e){} }
+    function hSelect(){ try { tg?.HapticFeedback?.selectionChanged(); } catch(e){} }
+    function hNotify(type){ try { tg?.HapticFeedback?.notificationOccurred(type); } catch(e){} }
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
     }
 
-    // --- CATALOG ---
     function renderCatalog(filterText = '') {
       const container = document.getElementById('catalog-container');
       const text = (filterText || '').trim().toLowerCase();
@@ -635,7 +751,7 @@
         <div class="product-card" onclick="openModal('${product.id}')">
           <div class="product-img-box">
             <div class="badge-cat">${product.category}</div>
-            <img src="${product.image}" onerror="this.src='https://via.placeholder.com/600x600?text=AsmarHandmade'">
+            <img src="${product.image}" onerror="this.src='https://via.placeholder.com/800x800?text=ASMARhandmade'">
           </div>
           <div class="product-info">
             <div>
@@ -646,15 +762,6 @@
           </div>
         </div>
       `).join('');
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'",'&#039;');
     }
 
     function setCategory(cat, btnElement) {
@@ -669,7 +776,6 @@
       renderCatalog(document.getElementById('searchInput').value);
     }
 
-    // --- NAVIGATION ---
     function switchView(viewId, navElement) {
       closeCart();
 
@@ -677,12 +783,13 @@
       document.getElementById('view-' + viewId).classList.add('active');
 
       document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      if (navElement) navElement.classList.add('active');
+      if(navElement) navElement.classList.add('active');
 
       hSelect();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- CART LOGIC ---
+    // cart
     function addToCart(productId) {
       cart[productId] = (cart[productId] || 0) + 1;
       saveCart();
@@ -751,13 +858,14 @@
       container.innerHTML = cartKeys.map(id => {
         const p = products.find(prod => prod.id === id);
         const qty = cart[id];
-        totalSum += p.price * qty;
+        const line = p.price * qty;
+        totalSum += line;
         return `
           <div class="cart-item-row">
-            <img src="${p.image}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/100'">
+            <img src="${p.image}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/120'">
             <div class="cart-item-info">
               <div class="cart-item-name">${escapeHtml(p.name)}</div>
-              <div class="cart-item-price">${(p.price * qty).toLocaleString('ru-RU')} ₽</div>
+              <div class="cart-item-price">${line.toLocaleString('ru-RU')} ₽</div>
             </div>
             <div class="qty-controls">
               <button class="qty-btn" onclick="updateQty('${id}', -1)">-</button>
@@ -773,50 +881,62 @@
       totalDisplay.style.display = 'flex';
     }
 
-    // --- QUICK VIEW MODAL ---
+    // Quick view modal
     function openModal(productId){
       const p = products.find(x => x.id === productId);
       if (!p) return;
       document.getElementById('modalImg').src = p.image;
-      document.getElementById('modalImg').onerror = function(){ this.src='https://via.placeholder.com/900x700?text=AsmarHandmade'; }
+      document.getElementById('modalImg').onerror = function(){ this.src='https://via.placeholder.com/1200x900?text=ASMARhandmade'; }
       document.getElementById('modalName').innerText = p.name;
       document.getElementById('modalPrice').innerText = `${p.price.toLocaleString('ru-RU')} ₽`;
       document.getElementById('modalDesc').innerText = p.desc || 'Премиальная кожа • ручная работа • идеальные детали.';
-      const addBtn = document.getElementById('modalAddBtn');
-      addBtn.onclick = ()=>{ addToCart(productId); };
+      document.getElementById('modalAddBtn').onclick = ()=> addToCart(productId);
       document.getElementById('modal').classList.add('open');
       hImpact('light');
     }
-    function closeModal(e){
+    function closeModal(){
       document.getElementById('modal').classList.remove('open');
     }
 
-    // --- SEND ORDER (tg.sendData) ---
+    // keyboard overlap: scroll order button into view on focus
+    function ensureOrderVisible(){
+      const btn = document.getElementById('btnOrder');
+      if (!btn) return;
+      setTimeout(()=> btn.scrollIntoView({ behavior: 'smooth', block: 'center' }), 180);
+    }
+    ['userName','userPhone','userAddress','userComment'].forEach(id=>{
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('focus', ensureOrderVisible);
+    });
+
+    // Send order
     function sendOrder() {
       const name = document.getElementById('userName').value.trim();
       const phone = document.getElementById('userPhone').value.trim();
       const address = document.getElementById('userAddress').value.trim();
       const comment = document.getElementById('userComment').value.trim();
 
-      if(!name || !phone) {
-        try { tg?.showAlert?.("Заполните Имя и Телефон для оформления заказа."); }
-        catch(e){ alert("Заполните Имя и Телефон для оформления заказа."); }
+      if (!name || !phone || !address){
+        try { tg?.showAlert?.("Заполните обязательные поля: Имя, Телефон, Адрес."); }
+        catch(e){ alert("Заполните обязательные поля: Имя, Телефон, Адрес."); }
         return;
       }
 
-      const orderItems = Object.keys(cart).map(id => {
+      const items = Object.keys(cart).map(id => {
         const p = products.find(prod => prod.id === id);
-        return { id, name: p.name, qty: cart[id], price: p.price, line: p.price * cart[id] };
+        const qty = cart[id];
+        return { id, name: p.name, qty, price: p.price, line: p.price * qty };
       });
 
-      const total = orderItems.reduce((sum, item) => sum + item.line, 0);
+      const total = items.reduce((sum, it)=> sum + it.line, 0);
 
       const orderData = {
         type: "order",
-        shop: "AsmarHandmade",
+        shop: "ASMARhandmade",
         created_at: new Date().toISOString(),
         customer: { name, phone, address, comment },
-        items: orderItems,
+        items,
         total_sum: total,
         currency: "RUB"
       };
@@ -827,11 +947,19 @@
         console.log("sendData payload:", orderData);
         alert("Открой WebApp из Telegram для отправки заказа. Payload в консоли.");
       }
+
+      // clear cart locally after send
+      cart = {};
+      saveCart();
+      updateBadge();
+      renderCartItems();
+      closeCart();
     }
 
-    // Start
+    // start
     updateBadge();
     renderCatalog();
   </script>
+
 </body>
 </html>
