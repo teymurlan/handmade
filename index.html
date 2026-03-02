@@ -1,1112 +1,337 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>AsmarA.handmade — Catalog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AsmarA Luxury</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #D4AF37; /* Золото */
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
 
-  <!-- Telegram WebApp -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-  <style>
-    :root{
-      --bg: #07070a;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.10);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.64);
-      --gold: #d7b56d;
-      --gold2:#f2dfb1;
-      --danger:#ff4d4f;
-      --ok:#2bd576;
+        /* Top Bar */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-bottom: 0.5px solid rgba(0,0,0,0.05);
+        }
 
-      --r-lg: 22px;
-      --r-md: 16px;
-      --shadow: 0 18px 55px rgba(0,0,0,.55);
-      --shadow2: 0 10px 26px rgba(0,0,0,.45);
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
 
-      --safe-b: env(safe-area-inset-bottom);
-      --safe-t: env(safe-area-inset-top);
-    }
+        /* Search Bar Luxury Style */
+        .search-container {
+            padding: 10px 20px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-family: inherit;
+            background: #fcfcfc;
+            box-sizing: border-box;
+            outline: none;
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1200px 600px at 15% -10%, rgba(215,181,109,.18), transparent 55%),
-        radial-gradient(900px 500px at 95% 10%, rgba(242,223,177,.10), transparent 50%),
-        radial-gradient(900px 700px at 55% 110%, rgba(255,255,255,.06), transparent 55%),
-        linear-gradient(180deg, #06060a, #07070a 35%, #050507);
-      color:var(--text);
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: calc(84px + var(--safe-b)); /* место под нижнюю панель */
-    }
+        /* Catalog Grid */
+        .catalog {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            padding-bottom: 120px; /* Отступ под меню */
+        }
 
-    a{color:inherit; text-decoration:none}
-    button{font:inherit}
-    .wrap{max-width:1100px; margin:0 auto; padding: 18px 16px 22px;}
+        .product-card {
+            position: relative;
+            background: #fff;
+            transition: transform 0.3s ease;
+        }
 
-    /* Top bar */
-    .top{
-      position: sticky; top: 0;
-      z-index: 5;
-      padding-top: calc(10px + var(--safe-t));
-      background: linear-gradient(180deg, rgba(7,7,10,.95), rgba(7,7,10,.72), transparent);
-      backdrop-filter: blur(10px);
-    }
+        .product-img-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1.2;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
 
-    .brand{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding: 10px 16px 12px;
-    }
-    .brand-left{display:flex; flex-direction:column; gap:4px;}
-    .logo{
-      letter-spacing: .22em;
-      font-weight: 700;
-      font-size: 14px;
-      color: rgba(255,255,255,.9);
-    }
-    .sub{
-      font-size: 12.5px;
-      color: var(--muted);
-      line-height: 1.25;
-    }
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    .pill{
-      display:flex; gap:10px; align-items:center;
-    }
-    .search{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      min-width: 180px;
-    }
-    .search input{
-      width:100%;
-      border:none; outline:none;
-      background:transparent;
-      color: var(--text);
-      font-size: 13.5px;
-    }
-    .icon{
-      width:18px; height:18px;
-      opacity:.85;
-      flex:0 0 auto;
-    }
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 8px;
+            font-size: 8px;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
 
-    .cart-btn{
-      position: relative;
-      border:1px solid rgba(215,181,109,.28);
-      background: linear-gradient(180deg, rgba(215,181,109,.18), rgba(255,255,255,.06));
-      color: var(--text);
-      border-radius: 999px;
-      padding: 10px 12px;
-      display:flex; align-items:center; gap:10px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.35);
-      cursor:pointer;
-      transition: transform .12s ease, border-color .2s ease;
-    }
-    .cart-btn:active{transform: scale(.98)}
-    .badge{
-      position:absolute; top:-6px; right:-6px;
-      min-width: 18px;
-      height: 18px;
-      padding: 0 5px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, var(--gold2), var(--gold));
-      color:#16120a;
-      font-size: 12px;
-      font-weight: 800;
-      display:flex; align-items:center; justify-content:center;
-      border:1px solid rgba(0,0,0,.25);
-    }
+        .product-info {
+            padding: 12px 5px;
+        }
 
-    /* Hero */
-    .hero{
-      margin: 8px 16px 14px;
-      border-radius: var(--r-lg);
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(800px 350px at 18% 15%, rgba(215,181,109,.18), transparent 55%),
-        radial-gradient(700px 350px at 90% 10%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      overflow:hidden;
-      box-shadow: var(--shadow2);
-      position: relative;
-    }
-    .hero-inner{
-      padding: 18px 16px 16px;
-      display:flex;
-      gap:14px;
-      align-items:flex-end;
-      justify-content:space-between;
-    }
-    .hero h1{
-      margin:0;
-      font-size: 18px;
-      letter-spacing: .02em;
-      line-height:1.2;
-    }
-    .hero p{
-      margin: 8px 0 0;
-      font-size: 13.5px;
-      color: var(--muted);
-      line-height:1.35;
-      max-width: 520px;
-    }
-    .hero .cta{
-      flex:0 0 auto;
-      display:flex; flex-direction:column; gap:8px; align-items:flex-end;
-    }
-    .mini{
-      font-size: 12px;
-      color: rgba(255,255,255,.70);
-    }
-    .chipset{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
-    .chip{
-      font-size:12px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.82);
-    }
-    .chip.gold{
-      border-color: rgba(215,181,109,.35);
-      background: rgba(215,181,109,.13);
-      color: rgba(242,223,177,.95);
-    }
+        .product-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    /* Tabs */
-    .tabs{
-      margin: 14px 16px 10px;
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-    .tab{
-      cursor:pointer;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.78);
-      font-size: 13px;
-      transition: background .2s ease, transform .12s ease, border-color .2s ease;
-      user-select:none;
-    }
-    .tab:active{transform: scale(.99)}
-    .tab.active{
-      border-color: rgba(215,181,109,.38);
-      background: linear-gradient(180deg, rgba(215,181,109,.16), rgba(255,255,255,.06));
-      color: rgba(255,255,255,.92);
-    }
+        .product-price {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 15px;
+        }
 
-    /* Grid */
-    .grid{
-      margin: 8px 16px 18px;
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
-    @media (min-width: 900px){
-      .grid{grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px;}
-      .search{min-width: 260px;}
-      .hero h1{font-size: 20px;}
-    }
+        .add-to-cart-small {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
 
-    .card{
-      border-radius: var(--r-lg);
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      box-shadow: 0 10px 26px rgba(0,0,0,.35);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      min-height: 280px;
-    }
-    .card .img{
-      position:relative;
-      aspect-ratio: 4/5;
-      background: rgba(255,255,255,.04);
-      overflow:hidden;
-    }
-    .card img{
-      width:100%; height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.02);
-      filter: contrast(1.04) saturate(1.02);
-    }
-    .tag{
-      position:absolute;
-      top:10px; left:10px;
-      padding: 7px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.35);
-      backdrop-filter: blur(8px);
-      color: rgba(255,255,255,.88);
-    }
+        /* Bottom Navigation Menu */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 65px;
+            background: #1a1a1a; /* Темный люкс */
+            border-radius: 35px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
 
-    .card .body{
-      padding: 12px 12px 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-      flex:1;
-    }
-    .title-row{
-      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
-    }
-    .name{
-      font-weight: 700;
-      font-size: 13.5px;
-      line-height:1.2;
-    }
-    .price{
-      font-weight: 800;
-      color: rgba(242,223,177,.95);
-      letter-spacing: .02em;
-      font-size: 13.5px;
-      white-space:nowrap;
-    }
-    .desc{
-      margin:0;
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height: 1.35;
-      min-height: 34px;
-    }
-    .actions{
-      margin-top:auto;
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    .btn{
-      cursor:pointer;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.90);
-      padding: 10px 10px;
-      font-weight: 700;
-      font-size: 13px;
-      display:flex; align-items:center; justify-content:center;
-      transition: transform .12s ease, border-color .2s ease, background .2s ease;
-      user-select:none;
-    }
-    .btn:active{transform: scale(.99)}
-    .btn.primary{
-      flex:1;
-      border-color: rgba(215,181,109,.35);
-      background: linear-gradient(180deg, rgba(215,181,109,.18), rgba(255,255,255,.06));
-    }
-    .btn.ghost{
-      width:44px; flex:0 0 auto;
-    }
+        .nav-btn {
+            color: #888;
+            text-decoration: none;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: 0.3s;
+        }
 
-    /* Bottom navigation */
-    .bottom-nav{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 10;
-      padding: 10px 12px calc(10px + var(--safe-b));
-      background: linear-gradient(180deg, transparent, rgba(7,7,10,.72) 25%, rgba(7,7,10,.92));
-      backdrop-filter: blur(14px);
-    }
-    .nav-bar{
-      max-width: 1100px;
-      margin: 0 auto;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      box-shadow: var(--shadow2);
-      display:flex;
-      justify-content:space-between;
-      padding: 10px 10px;
-      gap: 6px;
-    }
-    .nav-item{
-      flex:1;
-      border-radius: 16px;
-      padding: 10px 10px;
-      display:flex; flex-direction:column; gap:6px;
-      align-items:center; justify-content:center;
-      color: rgba(255,255,255,.74);
-      cursor:pointer;
-      border: 1px solid transparent;
-      transition: background .2s ease, border-color .2s ease, transform .12s ease;
-      user-select:none;
-    }
-    .nav-item:active{transform: scale(.99)}
-    .nav-item.active{
-      color: rgba(255,255,255,.92);
-      border-color: rgba(215,181,109,.28);
-      background: rgba(215,181,109,.12);
-    }
-    .nav-item span{
-      font-size: 11.5px;
-      letter-spacing: .01em;
-    }
+        .nav-btn.active { color: var(--accent); }
 
-    /* Bottom sheet */
-    .sheet-overlay{
-      position: fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      z-index: 20;
-      display:none;
-      align-items:flex-end;
-    }
-    .sheet-overlay.show{display:flex;}
-    .sheet{
-      width:100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      border-radius: 26px 26px 0 0;
-      border:1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transform: translateY(8px);
-      animation: up .18s ease-out forwards;
-    }
-    @keyframes up {to{transform: translateY(0)}}
-    .sheet-head{
-      padding: 12px 14px 8px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .grab{
-      width: 48px; height: 5px; border-radius: 999px;
-      background: rgba(255,255,255,.22);
-      margin: 6px auto 6px;
-    }
-    .sheet-title{
-      font-weight: 800;
-      letter-spacing:.02em;
-    }
-    .sheet-close{
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.9);
-      padding: 9px 10px;
-      border-radius: 14px;
-    }
+        .nav-btn svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
 
-    .sheet-body{
-      padding: 0 14px 14px;
-      max-height: min(72vh, 620px);
-      overflow:auto;
-    }
+        /* Cart Bottom Sheet */
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 30px 30px 0 0;
+            padding: 25px;
+            z-index: 2000;
+            transition: 0.5s cubic-bezier(0.32, 1, 0.23, 1);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
 
-    .cart-list{display:flex; flex-direction:column; gap:10px; margin-top:10px;}
-    .cart-item{
-      display:flex; gap:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      border-radius: 18px;
-      padding: 10px;
-      align-items:center;
-    }
-    .thumb{
-      width: 54px; height: 54px;
-      border-radius: 14px;
-      overflow:hidden;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      flex:0 0 auto;
-    }
-    .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
-    .ci-main{flex:1; min-width:0}
-    .ci-name{
-      font-weight: 800;
-      font-size: 13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .ci-sub{
-      margin-top:4px;
-      font-size: 12px;
-      color: var(--muted);
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-    }
-    .qty{
-      display:flex; align-items:center; gap:8px;
-      flex:0 0 auto;
-    }
-    .qty button{
-      width: 34px; height: 34px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.9);
-      cursor:pointer;
-      font-weight: 900;
-    }
-    .qty .n{min-width: 18px; text-align:center; font-weight: 800;}
-    .remove{
-      cursor:pointer;
-      color: rgba(255,255,255,.75);
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      padding: 8px 10px;
-      border-radius: 12px;
-    }
+        .bottom-sheet.show { bottom: 0; }
 
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.10);
-      margin: 14px 0;
-    }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1500;
+        }
 
-    .form{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    .field{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      border-radius: 16px;
-      padding: 10px 12px;
-    }
-    .field label{
-      display:block;
-      font-size: 11.5px;
-      color: rgba(255,255,255,.68);
-      margin-bottom:6px;
-    }
-    .field input, .field textarea{
-      width:100%;
-      border:none; outline:none;
-      background:transparent;
-      color: var(--text);
-      font-size: 13.5px;
-      resize:none;
-    }
+        .checkout-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
 
-    .total-row{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-top: 10px;
-      padding: 12px 12px;
-      border-radius: 18px;
-      border:1px solid rgba(215,181,109,.28);
-      background: rgba(215,181,109,.10);
-    }
-    .total-row .t{
-      color: rgba(255,255,255,.86);
-      font-weight: 800;
-    }
-    .total-row .v{
-      color: rgba(242,223,177,.98);
-      font-weight: 900;
-      letter-spacing:.02em;
-    }
-
-    .submit{
-      margin-top: 12px;
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 18px;
-      border:1px solid rgba(215,181,109,.38);
-      background: linear-gradient(180deg, rgba(242,223,177,.22), rgba(215,181,109,.16));
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      cursor:pointer;
-      box-shadow: 0 18px 55px rgba(0,0,0,.35);
-    }
-    .hint{
-      margin-top:10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-      line-height:1.35;
-    }
-
-    /* Pages */
-    .page{display:none}
-    .page.show{display:block}
-
-    .info-card{
-      margin: 12px 16px 0;
-      border-radius: var(--r-lg);
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      padding: 14px 14px;
-      box-shadow: var(--shadow2);
-    }
-    .info-card h2{
-      margin:0 0 8px;
-      font-size: 16px;
-      letter-spacing:.01em;
-    }
-    .info-card p{
-      margin:0;
-      color: var(--muted);
-      font-size: 13.5px;
-      line-height:1.45;
-    }
-    .contact-row{
-      margin-top: 12px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .linkbtn{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.88);
-      font-weight: 800;
-      cursor:pointer;
-    }
-
-    /* Small helper toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(96px + var(--safe-b));
-      z-index: 30;
-      background: rgba(0,0,0,.72);
-      border: 1px solid rgba(255,255,255,.14);
-      backdrop-filter: blur(10px);
-      color: rgba(255,255,255,.92);
-      padding: 10px 12px;
-      border-radius: 14px;
-      box-shadow: var(--shadow2);
-      display:none;
-      max-width: min(560px, calc(100% - 24px));
-      font-size: 13px;
-    }
-    .toast.show{display:block; animation: pop .18s ease-out}
-    @keyframes pop {from{transform: translateX(-50%) translateY(6px); opacity:.0} to{transform: translateX(-50%) translateY(0); opacity:1}}
-
-    /* Disable selection on buttons */
-    .btn,.cart-btn,.nav-item,.tab,.sheet-close,.submit,.linkbtn,.qty button{ -webkit-tap-highlight-color: transparent; }
-
-  </style>
+        .btn-order {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
 
-  <!-- TOP -->
-  <div class="top">
-    <div class="brand wrap" style="padding-left:16px; padding-right:16px;">
-      <div class="brand-left">
-        <div class="logo">ASMARA.HANDMADE</div>
-        <div class="sub">Hand-stitched leather • Milano / Dubai mood • Premium made-by-order</div>
-      </div>
-
-      <div class="pill">
-        <div class="search" title="Поиск по каталогу">
-          <svg class="icon" viewBox="0 0 24 24" fill="none">
-            <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" opacity=".85"/>
-            <path d="M16.6 16.6 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".85"/>
-          </svg>
-          <input id="q" placeholder="Поиск: сумка, картхолдер…" autocomplete="off" />
-        </div>
-
-        <button id="openCartBtn" class="cart-btn" aria-label="Открыть корзину">
-          <svg class="icon" viewBox="0 0 24 24" fill="none">
-            <path d="M7 8h14l-1.5 12H8.5L7 8Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-            <path d="M7 8 6 4H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-            <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" opacity=".9"/>
-          </svg>
-          <span style="font-weight:900; letter-spacing:.02em;">Корзина</span>
-          <span id="cartBadge" class="badge" style="display:none;">0</span>
-        </button>
-      </div>
+    <div class="top-bar">
+        <div class="logo">ASMARA</div>
+        <div style="font-size: 12px; font-weight: 300; letter-spacing: 1px;">MILANO</div>
     </div>
 
-    <div class="hero wrap" style="padding-left:16px; padding-right:16px;">
-      <div class="hero-inner">
-        <div>
-          <h1>Каталог — быстро, красиво, без лишнего 🤍</h1>
-          <p>Выбирай изделие, добавляй в корзину и оформи заказ в пару кликов. Я свяжусь с тобой для уточнения деталей и сроков.</p>
-        </div>
-        <div class="cta">
-          <div class="mini">Премиум кожа • ручные швы • внимание к деталям</div>
-          <div class="chipset">
-            <div class="chip gold">Milano aesthetic</div>
-            <div class="chip">Made by hand</div>
-            <div class="chip">Small batch</div>
-          </div>
-        </div>
-      </div>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Поиск аксессуаров...">
     </div>
 
-    <div class="tabs wrap" style="padding-left:16px; padding-right:16px;">
-      <div class="tab active" data-cat="all">✨ Всё</div>
-      <div class="tab" data-cat="bags">👜 Сумки</div>
-      <div class="tab" data-cat="cardholders">💳 Картхолдеры</div>
-      <div class="tab" data-cat="accessories">🎁 Аксессуары</div>
+    <div class="catalog" id="catalog">
+        <div class="product-card">
+            <div class="product-img-wrapper">
+                <img src="./assets/bag1.jpg.png" alt="Сумка">
+                <div class="badge">Limited</div>
+                <div class="add-to-cart-small" onclick="addToCart('Bag Luxury', 15000)">+</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title">Luxury Shoulder Bag</div>
+                <div class="product-price">15 000 ₽</div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img-wrapper">
+                <img src="./assets/card1.jpg.png" alt="Картхолдер">
+                <div class="add-to-cart-small" onclick="addToCart('Cardholder Gold', 3500)">+</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title">Cardholder Gold</div>
+                <div class="product-price">3 500 ₽</div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- PAGES -->
-  <main class="wrap" style="padding-left:16px; padding-right:16px;">
-    <!-- Catalog -->
-    <section id="pageCatalog" class="page show">
-      <div id="grid" class="grid"></div>
-    </section>
-
-    <!-- About -->
-    <section id="pageAbout" class="page">
-      <div class="info-card">
-        <h2>Обо мне</h2>
-        <p>
-          Я шью сумки и аксессуары из натуральной кожи — полностью вручную: аккуратные швы, идеальная посадка фурнитуры,
-          чистая эстетика. Каждое изделие — небольшая история и тонкая работа.
-        </p>
-        <div class="divider"></div>
-        <p>
-          Если хочешь другой цвет/фурнитуру/размер — напиши, подберём вариант. 🤍
-        </p>
-      </div>
-    </section>
-
-    <!-- Contacts -->
-    <section id="pageContacts" class="page">
-      <div class="info-card">
-        <h2>Контакты</h2>
-        <p>Напиши мне — отвечу и помогу с выбором.</p>
-        <div class="contact-row">
-          <button class="linkbtn" id="btnWrite">
-            ✉️ Написать в Telegram
-          </button>
-          <button class="linkbtn" id="btnShare">
-            🔗 Поделиться каталогом
-          </button>
+    <div class="bottom-nav">
+        <div class="nav-btn active" onclick="toggleSheet(false)">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>КАТАЛОГ</span>
         </div>
-        <div class="hint">
-          Подсказка: в Telegram можно открыть корзину и отправить заказ прямо отсюда.
+        <div class="nav-btn" onclick="toggleSheet(true)">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <span>КОРЗИНА</span>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <div class="nav-bar">
-      <div class="nav-item active" data-page="catalog">
-        <svg class="icon" viewBox="0 0 24 24" fill="none">
-          <path d="M4 7.5C4 6.12 5.12 5 6.5 5h11C18.88 5 20 6.12 20 7.5v11c0 1.38-1.12 2.5-2.5 2.5h-11C5.12 21 4 19.88 4 18.5v-11Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-          <path d="M8 9h8M8 12h8M8 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-        </svg>
-        <span>Каталог</span>
-      </div>
-
-      <div class="nav-item" data-page="about">
-        <svg class="icon" viewBox="0 0 24 24" fill="none">
-          <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-          <path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-          <path d="M12 7.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".9"/>
-        </svg>
-        <span>Обо мне</span>
-      </div>
-
-      <div class="nav-item" data-page="contacts">
-        <svg class="icon" viewBox="0 0 24 24" fill="none">
-          <path d="M4 5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v13c0 .83-.67 1.5-1.5 1.5h-13C4.67 20 4 19.33 4 18.5v-13Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-          <path d="M7 8h10M7 12h7M7 16h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-        </svg>
-        <span>Контакты</span>
-      </div>
-
-      <div class="nav-item" id="navCart">
-        <svg class="icon" viewBox="0 0 24 24" fill="none">
-          <path d="M7 8h14l-1.5 12H8.5L7 8Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-          <path d="M7 8 6 4H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-          <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" opacity=".9"/>
-        </svg>
-        <span>Корзина</span>
-      </div>
     </div>
-  </div>
 
-  <!-- Bottom Sheet Cart -->
-  <div id="sheetOverlay" class="sheet-overlay" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true">
-      <div class="grab"></div>
-      <div class="sheet-head">
-        <div class="sheet-title">Корзина</div>
-        <button class="sheet-close" id="closeSheet">Закрыть</button>
-      </div>
-
-      <div class="sheet-body">
-        <div id="cartEmpty" class="hint" style="display:none;">
-          Пока пусто. Добавь изделия из каталога — и оформи заказ 🤍
-        </div>
-
-        <div id="cartList" class="cart-list"></div>
-
-        <div class="divider"></div>
-
-        <div class="form">
-          <div class="field">
-            <label>Телефон</label>
-            <input id="fPhone" placeholder="+31 … / +7 …" />
-          </div>
-          <div class="field">
-            <label>Адрес доставки</label>
-            <input id="fAddress" placeholder="Город, улица, дом, кв." />
-          </div>
-          <div class="field">
-            <label>Комментарий</label>
-            <textarea id="fComment" rows="3" placeholder="Цвет, фурнитура, пожелания по срокам…"></textarea>
-          </div>
-        </div>
-
-        <div class="total-row">
-          <div class="t">Итого</div>
-          <div id="total" class="v">0 ₽</div>
-        </div>
-
-        <button id="submitOrder" class="submit">Отправить заказ</button>
-
-        <div class="hint">
-          После отправки заказ уйдёт в бот. Я отвечу и подтвержу детали ✨
-        </div>
-      </div>
+    <div class="overlay" id="overlay" onclick="toggleSheet(false)"></div>
+    <div class="bottom-sheet" id="cartSheet">
+        <div style="width: 40px; height: 4px; background: #eee; border-radius: 2px; margin: 0 auto 20px;"></div>
+        <h2 style="font-family: 'Cinzel'; text-align: center;">Ваш Заказ</h2>
+        <div id="cartItems"></div>
+        <hr style="border: 0.5px solid #eee; margin: 20px 0;">
+        <input type="text" id="userName" class="checkout-input" placeholder="Ваше Имя">
+        <input type="tel" id="userPhone" class="checkout-input" placeholder="Номер телефона">
+        <button class="btn-order" onclick="sendOrder()">Оформить заказ</button>
     </div>
-  </div>
 
-  <div id="toast" class="toast"></div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.MainButton.hide();
 
-  <script>
-    // --- Telegram init ---
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      // Можно подстроить цвета под Telegram, но тут оставляем люкс-тему.
-    }
+        let cart = [];
 
-    // --- Helpers ---
-    const money = (n) => new Intl.NumberFormat('ru-RU').format(n) + ' ₽';
-    const $ = (id) => document.getElementById(id);
+        function toggleSheet(show) {
+            const sheet = document.getElementById('cartSheet');
+            const overlay = document.getElementById('overlay');
+            if(show) {
+                sheet.classList.add('show');
+                overlay.style.display = 'block';
+                renderCart();
+            } else {
+                sheet.classList.remove('show');
+                overlay.style.display = 'none';
+            }
+        }
 
-    const toastEl = $('toast');
-    let toastTimer = null;
-    function toast(msg){
-      clearTimeout(toastTimer);
-      toastEl.textContent = msg;
-      toastEl.classList.add('show');
-      toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 1800);
-    }
+        function addToCart(name, price) {
+            cart.push({name, price});
+            tg.HapticFeedback.notificationOccurred('success');
+            alert('Добавлено в корзину!');
+        }
 
-    // --- IMPORTANT: set your real filenames from /assets/ (PNG ends like .jpg.png) ---
-    const PRODUCTS = [
-      // 👜 СУМКИ (замени img на свои реальные имена)
-      { id:'bag_1', cat:'bags', name:'Сумка «Still»', price:10700, tag:'Handmade', img:'./assets/bag1.jpg.png', desc:'Натуральная кожа, ручные швы, премиум-фурнитура.' },
-      { id:'bag_2', cat:'bags', name:'Сумка «Bergamo»', price:10500, tag:'Milano', img:'./assets/bag2.jpg.png', desc:'Чистая форма, идеальная посадка, мягкий светлый стиль.' },
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999;">Корзина пуста</p>';
+                return;
+            }
+            container.innerHTML = cart.map((item, index) => `
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span>${item.name}</span>
+                    <b>${item.price} ₽</b>
+                </div>
+            `).join('');
+        }
 
-      // 💳 КАРТХОЛДЕРЫ
-      { id:'card_1', cat:'cardholders', name:'Картхолдер «Classic»', price:2900, tag:'Leather', img:'./assets/card1.jpg.png', desc:'Тонкий профиль, удобные отделения, аккуратная кромка.' },
-      { id:'card_2', cat:'cardholders', name:'Картхолдер «Slim»', price:3200, tag:'Dubai', img:'./assets/card2.jpg.png', desc:'Минимализм и роскошь — на каждый день.' },
+        function sendOrder() {
+            const name = document.getElementById('userName').value;
+            const phone = document.getElementById('userPhone').value;
 
-      // 🎁 АКСЕССУАРЫ (если есть)
-      { id:'acc_1', cat:'accessories', name:'Обложка для паспорта', price:5500, tag:'Gift', img:'./assets/passport1.jpg.png', desc:'Идеально в подарок: кожа, швы и эстетика.' },
-    ];
+            if(!name || !phone || cart.length === 0) {
+                tg.showPopup({message: "Пожалуйста, заполните данные и добавьте товар."});
+                return;
+            }
 
-    // If image missing -> fallback + console warning (helps you debug assets paths)
-    const FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#0b0b10"/>
-            <stop offset="1" stop-color="#14141d"/>
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#g)"/>
-        <text x="50%" y="50%" fill="rgba(255,255,255,.7)" font-family="Arial" font-size="28" text-anchor="middle">
-          image not found
-        </text>
-        <text x="50%" y="56%" fill="rgba(215,181,109,.9)" font-family="Arial" font-size="18" text-anchor="middle">
-          проверь путь в /assets
-        </text>
-      </svg>
-    `);
+            const data = {
+                items: cart,
+                total: cart.reduce((sum, item) => sum + item.price, 0),
+                customer: name,
+                phone: phone
+            };
 
-    // --- State ---
-    let currentCat = 'all';
-    let query = '';
-    const cart = new Map(); // productId -> qty
-
-    // --- Render catalog ---
-    const grid = $('grid');
-    function matches(p){
-      const okCat = (currentCat === 'all') ? true : p.cat === currentCat;
-      const q = query.trim().toLowerCase();
-      const okQ = !q ? true : (p.name.toLowerCase().includes(q) || (p.desc||'').toLowerCase().includes(q));
-      return okCat && okQ;
-    }
-
-    function cardHTML(p){
-      return `
-        <article class="card" data-id="${p.id}">
-          <div class="img">
-            <div class="tag">${p.tag || 'Handmade'}</div>
-            <img src="${p.img}" alt="${escapeHtml(p.name)}" loading="lazy"
-                 onerror="this.onerror=null; console.warn('Image not found:', this.src); this.src='${FALLBACK}';" />
-          </div>
-          <div class="body">
-            <div class="title-row">
-              <div class="name">${escapeHtml(p.name)}</div>
-              <div class="price">${money(p.price)}</div>
-            </div>
-            <p class="desc">${escapeHtml(p.desc || '')}</p>
-            <div class="actions">
-              <button class="btn primary" onclick="addToCart('${p.id}')">Добавить</button>
-              <button class="btn ghost" title="Быстро в корзину" onclick="openCart()">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M7 8h14l-1.5 12H8.5L7 8Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                  <path d="M7 8 6 4H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function render(){
-      const items = PRODUCTS.filter(matches);
-      grid.innerHTML = items.map(cardHTML).join('');
-      updateBadge();
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'",'&#039;');
-    }
-
-    // --- Cart logic ---
-    function addToCart(id){
-      const n = cart.get(id) || 0;
-      cart.set(id, n + 1);
-      updateBadge();
-      toast('Добавлено в корзину ✨');
-    }
-
-    function dec(id){
-      const n = cart.get(id) || 0;
-      if (n <= 1) cart.delete(id);
-      else cart.set(id, n - 1);
-      renderCart();
-      updateBadge();
-    }
-    function inc(id){
-      const n = cart.get(id) || 0;
-      cart.set(id, n + 1);
-      renderCart();
-      updateBadge();
-    }
-    function removeItem(id){
-      cart.delete(id);
-      renderCart();
-      updateBadge();
-    }
-
-    function totalSum(){
-      let sum = 0;
-      for (const [id, qty] of cart.entries()){
-        const p = PRODUCTS.find(x => x.id === id);
-        if (p) sum += p.price * qty;
-      }
-      return sum;
-    }
-
-    const cartBadge = $('cartBadge');
-    function updateBadge(){
-      let count = 0;
-      for (const qty of cart.values()) count += qty;
-      if (count > 0){
-        cartBadge.style.display = 'flex';
-        cartBadge.textContent = count;
-      } else {
-        cartBadge.style.display = 'none';
-      }
-    }
-
-    const cartList = $('cartList');
-    const cartEmpty = $('cartEmpty');
-    const totalEl = $('total');
-
-    function renderCart(){
-      const entries = [...cart.entries()];
-      cartEmpty.style.display = entries.length ? 'none' : 'block';
-
-      cartList.innerHTML = entries.map(([id, qty]) => {
-        const p = PRODUCTS.find(x => x.id === id);
-        if (!p) return '';
-        const line = p.price * qty;
-
-        return `
-          <div class="cart-item">
-            <div class="thumb">
-              <img src="${p.img}" onerror="this.onerror=null; this.src='${FALLBACK}';" alt="">
-            </div>
-            <div class="ci-main">
-              <div class="ci-name">${escapeHtml(p.name)}</div>
-              <div class="ci-sub">
-                <span>${money(p.price)} × ${qty}</span>
-                <span style="color:rgba(242,223,177,.95); font-weight:900;">${money(line)}</span>
-              </div>
-            </div>
-            <div class="qty">
-              <button onclick="dec('${id}')">–</button>
-              <div class="n">${qty}</div>
-              <button onclick="inc('${id}')">+</button>
-            </div>
-            <button class="remove" onclick="removeItem('${id}')">✕</button>
-          </div>
-        `;
-      }).join('');
-
-      totalEl.textContent = money(totalSum());
-    }
-
-    // --- Bottom sheet open/close ---
-    const sheetOverlay = $('sheetOverlay');
-    const openCartBtn = $('openCartBtn');
-    const closeSheetBtn = $('closeSheet');
-
-    function openCart(){
-      renderCart();
-      sheetOverlay.classList.add('show');
-      sheetOverlay.setAttribute('aria-hidden','false');
-    }
-    function closeCart(){
-      sheetOverlay.classList.remove('show');
-      sheetOverlay.setAttribute('aria-hidden','true');
-    }
-
-    openCartBtn.addEventListener('click', openCart);
-    $('navCart').addEventListener('click', openCart);
-    closeSheetBtn.addEventListener('click', closeCart);
-    sheetOverlay.addEventListener('click', (e)=>{
-      if (e.target === sheetOverlay) closeCart();
-    });
-
-    // --- Tabs ---
-    document.querySelectorAll('.tab').forEach(t=>{
-      t.addEventListener('click', ()=>{
-        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-        t.classList.add('active');
-        currentCat = t.dataset.cat;
-        render();
-      });
-    });
-
-    // --- Search ---
-    $('q').addEventListener('input', (e)=>{
-      query = e.target.value || '';
-      render();
-    });
-
-    // --- Bottom nav pages ---
-    const pages = {
-      catalog: $('pageCatalog'),
-      about: $('pageAbout'),
-      contacts: $('pageContacts'),
-    };
-    function showPage(key){
-      Object.values(pages).forEach(p => p.classList.remove('show'));
-      pages[key].classList.add('show');
-
-      document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-      document.querySelectorAll(`.nav-item[data-page="${key}"]`).forEach(i=>i.classList.add('active'));
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    document.querySelectorAll('.nav-item[data-page]').forEach(i=>{
-      i.addEventListener('click', ()=> showPage(i.dataset.page));
-    });
-
-    // --- Contacts buttons ---
-    $('btnWrite').addEventListener('click', ()=>{
-      // Можно заменить на ссылку на твой @username:
-      if (tg) tg.openTelegramLink('https://t.me/');
-      else window.open('https://t.me/', '_blank');
-    });
-
-    $('btnShare').addEventListener('click', ()=>{
-      const url = window.location.href;
-      if (tg) tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(url)}`);
-      else navigator.clipboard?.writeText(url);
-      toast('Ссылка на каталог готова ✨');
-    });
-
-    // --- Submit order (sendData) ---
-    $('submitOrder').addEventListener('click', ()=>{
-      if (!cart.size){
-        toast('Корзина пустая');
-        return;
-      }
-
-      const phone = $('fPhone').value.trim();
-      const address = $('fAddress').value.trim();
-      const comment = $('fComment').value.trim();
-
-      // Сбор items
-      const items = [...cart.entries()].map(([id, qty])=>{
-        const p = PRODUCTS.find(x=>x.id===id);
-        return {
-          id,
-          name: p?.name || id,
-          price: p?.price || 0,
-          qty
-        };
-      });
-
-      const payload = {
-        type: 'order',
-        shop: 'AsmarA.handmade',
-        created_at: new Date().toISOString(),
-        customer: {
-          phone,
-          address,
-          comment
-        },
-        items,
-        total: totalSum(),
-        currency: 'RUB'
-      };
-
-      const data = JSON.stringify(payload);
-
-      // Telegram send
-      if (tg && typeof tg.sendData === 'function'){
-        tg.sendData(data);
-        toast('Заказ отправлен ✅');
-      } else {
-        // если открыто не из Telegram
-        console.log('sendData payload:', payload);
-        alert('Открой WebApp из Telegram, чтобы отправлять заказ.\nPayload выведен в консоль.');
-      }
-
-      // Очистка (можно отключить, если хочешь сохранять корзину)
-      cart.clear();
-      renderCart();
-      updateBadge();
-      closeCart();
-    });
-
-    // First render
-    render();
-  </script>
+            tg.sendData(JSON.stringify(data));
+        }
+    </script>
 </body>
 </html>
